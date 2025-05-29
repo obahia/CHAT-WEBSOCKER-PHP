@@ -11,22 +11,20 @@
 <body>
   <div id="loginArea">
     <h2>Entrar no Chat</h2>
-  
-    <input id="InputUsername"  placeholder="Seu nome..." />
-  
+    <input id="InputUsername" placeholder="Seu nome..." />
+
     <div id="salaListContainer">
       <p>Salas disponíveis:</p>
       <ul id="listaSalas"></ul>
     </div>
-  
-    <input id="inputNovaSala"  placeholder="Ou crie uma nova sala..." />
-  
+
+    <input id="inputNovaSala" placeholder="Ou crie uma nova sala..." />
     <button id="btnEntrar">Entrar</button>
   </div>
 
-  <div id="app">
+  <div id="app" style="display: none;">
     <div id="topBar">
-      Sala: <span id="nomeSala"></span>
+      Sala: <span id="nomeSala">Nenhuma</span>
       <button id="btnSair">Sair</button>
     </div>
 
@@ -36,130 +34,9 @@
       <input id="msg" placeholder="Digite uma mensagem..." autocomplete="off" />
       <button id="btnEnviar">Enviar</button>
     </div>
-
-
   </div>
 
-  <script>
-    const loginArea = document.getElementById("loginArea");
-    const app = document.getElementById("app");
-    const nomeInput = document.getElementById("InputUsername");
-    const inputNovaSala = document.getElementById("inputNovaSala");
-    const listaSalas = document.getElementById("listaSalas");
-    const btnEntrar = document.getElementById("btnEntrar");
-    const btnSair = document.getElementById("btnSair");
-    const nomeSala = document.getElementById("nomeSala");
-    const chat = document.getElementById("chat");
-    const msgInput = document.getElementById("msg");
-    const btnEnviar = document.getElementById("btnEnviar");
-  
-    let socket;
-    let nome = "";
-    let sala = "";
-    let salaSelecionada = "";
-  
-    
-  
-    // Renderiza a lista de salas
-    salasDisponiveis.forEach((nomeSala) => {
-      const li = document.createElement("li");
-      li.textContent = nomeSala;
-  
-      li.addEventListener("click", () => {
-        document.querySelectorAll("#listaSalas li").forEach(el => el.classList.remove("selected"));
-        li.classList.add("selected");
-        salaSelecionada = nomeSala;
-        inputNovaSala.value = ""; // limpa input se selecionar
-      });
-  
-      listaSalas.appendChild(li);
-    });
-  
-    btnEntrar.addEventListener("click", () => {
-      nome = nomeInput.value.trim();
-      
-      const novaSala = inputNovaSala.value.trim();
-      sala = novaSala || salaSelecionada;
-  
-      if (!nome || !sala) {
-        alert("Preencha seu nome e selecione ou crie uma sala!");
-        return;
-      }
-  
-      entrarNoChat(nome, sala);
-    });
-  
-    btnSair.addEventListener("click", () => {
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({ tipo: "sair" }));
-        socket.close();
-      }
-  
-      socket = null;
-      nome = "";
-      sala = "";
-      salaSelecionada = "";
-  
-      app.style.display = "none";
-      loginArea.style.display = "block";
-      chat.innerHTML = "";
-      nomeSala.textContent = "Nenhuma";
-      nomeInput.value = "";
-      inputNovaSala.value = "";
-      document.querySelectorAll("#listaSalas li").forEach(el => el.classList.remove("selected"));
-    });
-  
-    btnEnviar.addEventListener("click", enviarMensagem);
-  
-    msgInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") enviarMensagem();
-    });
-  
-    function entrarNoChat(nomeUser, salaUser) {
-      loginArea.style.display = "none";
-      app.style.display = "flex";
-      nomeSala.textContent = salaUser;
-      chat.innerHTML = "";
-  
-      socket = new WebSocket("ws://localhost:8080");
-  
-      socket.onopen = () => {
-        socket.send(JSON.stringify({ tipo: "entrar", nome: nomeUser, sala: salaUser }));
-      };
-  
-      socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-  
-        if (data.tipo === "mensagem") {
-          adicionaMensagem(data.texto, data.autor === nome);
-        }
-      };
-  
-      socket.onclose = () => {
-        chat.innerHTML = "";
-      };
-    }
-  
-    function enviarMensagem() {
-      const texto = msgInput.value.trim();
-      if (!texto || !socket || socket.readyState !== WebSocket.OPEN) return;
-  
-      const mensagem = `${nome}: ${texto}`;
-      socket.send(JSON.stringify({ tipo: "mensagem", texto: mensagem, autor: nome }));
-      adicionaMensagem(mensagem, true);
-      msgInput.value = "";
-      msgInput.focus();
-    }
-  
-    function adicionaMensagem(texto, isOwn) {
-      const li = document.createElement("li");
-      li.textContent = texto;
-      if (isOwn) li.classList.add("own");
-      chat.appendChild(li);
-      chat.scrollTop = chat.scrollHeight;
-    }
-  </script>
-  
+  <script src="chat.js"></script>
 </body>
 
 </html>
