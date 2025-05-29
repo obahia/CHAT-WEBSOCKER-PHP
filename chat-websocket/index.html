@@ -58,18 +58,17 @@
     let sala = "";
     let salaSelecionada = "";
   
-    // Exemplo de salas disponíveis (tu pode trocar isso depois pra vir do backend)
-    const salasDisponiveis = ["geral", "programação", "games", "aleatório"];
+    
   
     // Renderiza a lista de salas
-    salasDisponiveis.forEach((salaNome) => {
+    salasDisponiveis.forEach((nomeSala) => {
       const li = document.createElement("li");
-      li.textContent = salaNome;
+      li.textContent = nomeSala;
   
       li.addEventListener("click", () => {
         document.querySelectorAll("#listaSalas li").forEach(el => el.classList.remove("selected"));
         li.classList.add("selected");
-        salaSelecionada = salaNome;
+        salaSelecionada = nomeSala;
         inputNovaSala.value = ""; // limpa input se selecionar
       });
   
