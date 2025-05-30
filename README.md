@@ -1,4 +1,4 @@
-🗨️ Real-Time Chat Project with WebSockets (PHP + HTML)
+🗨️ Real-Time Chat Project with WebSockets (PHP + NODE JS +  HTML)
 📋 Description (EN)
 This project is a real-time chat application developed using WebSockets, with PHP on the backend and a simple HTML/CSS/JavaScript interface. It allows multiple users to chat in real time through a persistent WebSocket connection.
 
