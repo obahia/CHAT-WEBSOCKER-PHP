@@ -23,8 +23,8 @@ bash
 git clone https://github.com/yourusername/project-name.git
 
 2. Go into the project folder:
-cd project-name
+cd chat-websocket
 
-3. Start the WebSocket server using PHP:
-php websocket-server.php
+3. Start the WebSocket server using NODE.JS:
+node webserver.js
 
