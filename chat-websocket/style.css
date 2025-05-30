@@ -148,6 +148,16 @@ html {
   margin-left: auto;
 }
 
+.nomeCliente {
+  font-weight: bold;
+}
+
+.mensagem-sistema {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+}
+
 #topBar {
   background: #075e54;
   color: white;

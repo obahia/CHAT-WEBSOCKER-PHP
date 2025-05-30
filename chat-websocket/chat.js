@@ -135,8 +135,28 @@ function enviarMensagem() {
 
 function adicionaMensagem(texto, isOwn) {
   const li = document.createElement("li");
-  li.textContent = texto;
-  if (isOwn) li.classList.add("own");
+
+  // Mensagem do sistema (sem dois pontos)
+  if (!texto.includes(":")) {
+    li.classList.add("mensagem-sistema");
+    li.textContent = texto;
+  } else {
+    const [autor, ...msgParts] = texto.split(":");
+    const msg = msgParts.join(":").trim();
+
+    const spanNome = document.createElement("span");
+    spanNome.classList.add("nomeCliente");
+    spanNome.textContent = autor + ": ";
+
+    const spanMsg = document.createElement("span");
+    spanMsg.textContent = msg;
+
+    li.appendChild(spanNome);
+    li.appendChild(spanMsg);
+
+    if (isOwn) li.classList.add("own");
+  }
+
   chat.appendChild(li);
   chat.scrollTop = chat.scrollHeight;
 }
